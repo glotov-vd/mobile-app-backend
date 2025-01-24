@@ -1,4 +1,4 @@
-package edu.drive_rent.client_app.orders.models;
+package edu.drive_rent.client_app.booking.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
