@@ -13,7 +13,12 @@ import edu.drive_rent.client_app.cars.models.EngineType;
 import edu.drive_rent.client_app.cars.models.TransmissionType;
 import edu.drive_rent.client_app.cars.services.CarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -107,5 +115,34 @@ public class CarController {
         return carService.searchCars(searchRequest).stream()
                 .map(CarMapper::toCarDTO)
                 .toList();
+    }
+
+
+    @GetMapping("/image")
+    public ResponseEntity<Resource> getCarImage(@RequestParam String brand,
+                                                @RequestParam String model
+    ) {
+        try {
+            // Путь к файлу изображения
+            Path imagePath = Paths.get("src/main/resources/images/" + brand.toLowerCase() + "/" + model.toLowerCase() + "/main.jpg");
+
+            // Загружаем ресурс
+            Resource imageResource = new UrlResource(imagePath.toUri());
+
+            if (!imageResource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Определяем Content-Type
+            String contentType = MediaType.IMAGE_JPEG_VALUE;
+
+            // Возвращаем изображение
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagePath.getFileName().toString() + "\"")
+                    .body(imageResource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

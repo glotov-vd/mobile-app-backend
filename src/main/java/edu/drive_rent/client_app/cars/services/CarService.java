@@ -1,12 +1,10 @@
 package edu.drive_rent.client_app.cars.services;
 
 import edu.drive_rent.client_app.cars.controllers.dto.CarSearchRequest;
-import edu.drive_rent.client_app.cars.controllers.dto.booking.BookingRequest;
 import edu.drive_rent.client_app.cars.models.Car;
 import edu.drive_rent.client_app.cars.models.CarBrand;
 import edu.drive_rent.client_app.cars.repositories.CarBrandRepository;
 import edu.drive_rent.client_app.cars.repositories.CarRepository;
-import edu.drive_rent.client_app.booking.repositories.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,6 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final CarBrandRepository carBrandRepository;
-    private final OrderRepository orderRepository;
 
 
     public List<Car> getAllCars() {
@@ -33,6 +30,7 @@ public class CarService {
     }
 
     public List<Car> searchCars(CarSearchRequest searchRequest) {
+
         return carRepository.searchCars(
                 searchRequest.getBrand(),
                 searchRequest.getModel(),
