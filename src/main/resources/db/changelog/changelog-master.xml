@@ -8,4 +8,5 @@
     <include file="/0.0.1/test_filling.sql" relativeToChangelogFile="true"/>
     <include file="/0.0.1/new_test_filling.sql" relativeToChangelogFile="true"/>
     <include file="/0.0.1/add_rental_rates_table.sql" relativeToChangelogFile="true"/>
+    <include file="/0.0.1/add_comments_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
