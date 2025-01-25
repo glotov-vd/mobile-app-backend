@@ -3,8 +3,10 @@ package edu.drive_rent.client_app.cars.services;
 import edu.drive_rent.client_app.cars.controllers.dto.CarSearchRequest;
 import edu.drive_rent.client_app.cars.models.Car;
 import edu.drive_rent.client_app.cars.models.CarBrand;
+import edu.drive_rent.client_app.cars.models.RentalRate;
 import edu.drive_rent.client_app.cars.repositories.CarBrandRepository;
 import edu.drive_rent.client_app.cars.repositories.CarRepository;
+import edu.drive_rent.client_app.cars.repositories.RentalRateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final CarBrandRepository carBrandRepository;
+    private final RentalRateRepository rentalRateRepository;
 
 
     public List<Car> getAllCars() {
@@ -46,5 +49,10 @@ public class CarService {
 
     public List<CarBrand> getAllBrands() {
         return carBrandRepository.findAll();
+    }
+
+    public RentalRate getCarRental(String carId) {
+        return rentalRateRepository.findByCarId(carId)
+                .orElseThrow(() -> new RuntimeException("Car not found"));
     }
 }

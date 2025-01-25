@@ -20,25 +20,26 @@ import java.util.List;
 public class OrderController {
 
     private final BookingService bookingService;
+    private final OrderMapper orderMapper;
 
     @GetMapping
     public List<OrderInfo> getAllOrders(@RequestParam(required = false) String client) {
 
         if (client == null) {
             return bookingService.getAllOrders().stream()
-                    .map(OrderMapper::toOrderInfo)
+                    .map(orderMapper::toOrderInfo)
                     .toList();
         }
 
         return bookingService.getAllOrdersOfUser(client).stream()
-                .map(OrderMapper::toOrderInfo)
+                .map(orderMapper::toOrderInfo)
                 .toList();
     }
 
     @GetMapping("/{id}")
     public OrderInfo getOrderInfo(@PathVariable String id) {
 
-        return OrderMapper.toOrderInfo(bookingService.getOrder(id));
+        return orderMapper.toOrderInfo(bookingService.getOrder(id));
     }
 
     @DeleteMapping("/{id}")
